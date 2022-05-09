@@ -461,16 +461,16 @@ def main():
     if c.pat_append:
         with open(filename, "ab") as f:
             for sig in sigs:
-                f.write(sig)
-                f.write("\r\n")
+                f.write(sig.encode())
+                f.write(b"\r\n")
             f.write(b"\r\n")
             f.write(b"---")
             f.write(b"\r\n")
     else:
         with open(filename, "wb") as f:
             for sig in sigs:
-                f.write(sig)
-                f.write("\r\n")
+                f.write(sig.encode())
+                f.write(b"\r\n")
             f.write(b"\r\n")
             f.write(b"---")
             f.write(b"\r\n")

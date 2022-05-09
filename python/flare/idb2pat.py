@@ -35,7 +35,7 @@ def zrange(*args):
         raise RuntimeError("Invalid arguments provided to zrange: {:s}".format(str(args)))
     if end < start:
         raise RuntimeError("zrange only iterates from smaller to bigger numbers only: {:d}, {:d}".format(start, end))
-    return iter(itertools.count(start).next, end)
+    return iter(itertools.count(start).__next__, end)
 
 
 def get_ida_logging_handler():
@@ -255,7 +255,7 @@ def make_func_sig(config, func):
         else:
             sig += "%02X" % (get_byte(ea))
 
-    sig += ".." * (32 - (len(sig) / 2))
+    sig += ".." * (32 - (len(sig) // 2))
 
     if func.end_ea - func.start_ea > 32:
         crc_data = [0 for i in zrange(256)]
@@ -292,7 +292,7 @@ def make_func_sig(config, func):
 
         sig += public_format % (public - func.start_ea, name)
 
-    for ref_loc, ref in refs.iteritems():
+    for ref_loc, ref in refs.items():
         name = get_name(ref)
         if name is None or name == "":
             continue
@@ -463,15 +463,17 @@ def main():
             for sig in sigs:
                 f.write(sig)
                 f.write("\r\n")
-            f.write("---")
-            f.write("\r\n")
+            f.write(b"\r\n")
+            f.write(b"---")
+            f.write(b"\r\n")
     else:
         with open(filename, "wb") as f:
             for sig in sigs:
                 f.write(sig)
                 f.write("\r\n")
-            f.write("---")
-            f.write("\r\n")
+            f.write(b"\r\n")
+            f.write(b"---")
+            f.write(b"\r\n")
 
 if __name__ == "__main__":
     main()
